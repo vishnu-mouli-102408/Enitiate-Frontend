@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ImageFile from "../../../public/svg";
-const Login = () => {
+const Signup = () => {
   return (
     <div className="flex flex-col h-screen">
       <div className="flex justify-center items-center mt-16 lg:justify-start lg:px-16">
@@ -55,7 +55,7 @@ const Login = () => {
         {/* <!-- Right: Login Form --> */}
         <div className="lg:p-36 md:p-52 sm:20 p-12 w-full lg:w-1/2">
           <h1 className="text-3xl font-semibold mb-12 text-center">
-            Login to Your account
+            Create an account
           </h1>
           <form action="#" method="POST">
             {/* <!-- Username Input --> */}
@@ -119,6 +119,34 @@ const Login = () => {
                 autoComplete="off"
               />
             </div>
+            {/* confirm password */}
+            <div className="mb-6 relative">
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 17 17"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="material-symbols:password">
+                    <path
+                      id="Vector"
+                      d="M1.41665 13.4583V12.0417H15.5833V13.4583H1.41665ZM2.23123 9.17292L1.3104 8.64167L1.91248 7.57917H0.708313V6.51667H1.91248L1.3104 5.48958L2.23123 4.95833L2.83331 5.98542L3.4354 4.95833L4.35623 5.48958L3.75415 6.51667H4.95831V7.57917H3.75415L4.35623 8.64167L3.4354 9.17292L2.83331 8.11042L2.23123 9.17292ZM7.8979 9.17292L6.97706 8.64167L7.57915 7.57917H6.37498V6.51667H7.57915L6.97706 5.48958L7.8979 4.95833L8.49998 5.98542L9.10206 4.95833L10.0229 5.48958L9.42081 6.51667H10.625V7.57917H9.42081L10.0229 8.64167L9.10206 9.17292L8.49998 8.11042L7.8979 9.17292ZM13.5646 9.17292L12.6437 8.64167L13.2458 7.57917H12.0416V6.51667H13.2458L12.6437 5.48958L13.5646 4.95833L14.1666 5.98542L14.7687 4.95833L15.6896 5.48958L15.0875 6.51667H16.2916V7.57917H15.0875L15.6896 8.64167L14.7687 9.17292L14.1666 8.11042L13.5646 9.17292Z"
+                      fill="white"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <input
+                type="password"
+                id="confirm-password"
+                name="confirm-password"
+                placeholder="Re-enter your password"
+                className="w-full border ps-10 h-[3.2rem] border-gray-900 bg-black text-white rounded-lg py-2 px-3 focus:outline-none focus:border-gray-400"
+                autoComplete="off"
+              />
+            </div>
             {/* <!-- Remember Me Checkbox --> */}
             <div className="mb-8 flex items-center">
               <input
@@ -137,13 +165,13 @@ const Login = () => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
             >
-              Login
+              Create my account
             </button>
           </form>
           {/* <!-- Sign up  Link --> */}
           <div className="mt-6 text-blue-500 text-center">
             <Link href="#" className="hover:underline">
-              Sign up Here
+              Login in Here
             </Link>
           </div>
         </div>
@@ -152,4 +180,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
