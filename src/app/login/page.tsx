@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ImageFile from "../../../public/svg";
 import { useForm } from "react-hook-form";
-import { signInSchema, signinSchemaTypes } from "@/lib/zodSchemas";
+import { SignInSchema, SigninSchemaTypes } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 const Login = () => {
   const {
@@ -9,11 +9,11 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<signinSchemaTypes>({
-    resolver: zodResolver(signInSchema),
+  } = useForm<SigninSchemaTypes>({
+    resolver: zodResolver(SignInSchema),
   });
 
-  const onSubmit = async (data: signinSchemaTypes) => {
+  const onSubmit = async (data: SigninSchemaTypes) => {
     reset();
   };
 
@@ -107,7 +107,7 @@ const Login = () => {
                 autoComplete="off"
               />
               {errors.email && (
-                <p className="text-red-600">{`${errors.email.message}`}</p>
+                <p className="text-red-600">{errors.email.message}</p>
               )}
             </div>
 
@@ -140,7 +140,7 @@ const Login = () => {
                 autoComplete="off"
               />
               {errors.password && (
-                <p className="text-red-600">{`${errors.password.message}`}</p>
+                <p className="text-red-600">{errors.password.message}</p>
               )}
             </div>
             {/* <!-- Remember Me Checkbox --> */}

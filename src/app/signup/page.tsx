@@ -2,7 +2,9 @@ import Link from "next/link";
 import ImageFile from "../../../public/svg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema, signupSchemaTypes } from "@/lib/zodSchemas";
+import { SignupSchema, SignupSchemaTypes } from "@/lib/zodSchemas";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const Signup = () => {
   const {
@@ -10,12 +12,23 @@ const Signup = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<signupSchemaTypes>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<SignupSchemaTypes>({
+    resolver: zodResolver(SignupSchema),
   });
 
-  const onSubmit = async (data: signupSchemaTypes) => {
-    reset();
+  const onSubmit = async (data: SignupSchemaTypes) => {
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      const user = userCredentials.user;
+      console.log(user);
+      reset();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -108,7 +121,7 @@ const Signup = () => {
                 autoComplete="off"
               />
               {errors.email && (
-                <p className="text-red-600">{`${errors.email.message}`}</p>
+                <p className="text-red-600">{errors.email.message}</p>
               )}
             </div>
 
@@ -141,7 +154,7 @@ const Signup = () => {
                 autoComplete="off"
               />
               {errors.password && (
-                <p className="text-red-600">{`${errors.password.message}`}</p>
+                <p className="text-red-600">{errors.password.message}</p>
               )}
             </div>
             {/* confirm password */}
@@ -173,7 +186,7 @@ const Signup = () => {
                 autoComplete="off"
               />
               {errors.confirmPassword && (
-                <p className="text-red-600">{`${errors.confirmPassword.message}`}</p>
+                <p className="text-red-600">{errors.confirmPassword.message}</p>
               )}
             </div>
             {/* <!-- Remember Me Checkbox --> */}
