@@ -1,6 +1,22 @@
 import Link from "next/link";
 import ImageFile from "../../../public/svg";
+import { useForm } from "react-hook-form";
+import { signInSchema, signinSchemaTypes } from "@/lib/zodSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<signinSchemaTypes>({
+    resolver: zodResolver(signInSchema),
+  });
+
+  const onSubmit = async (data: signinSchemaTypes) => {
+    reset();
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <div className="flex justify-center items-center mt-16 lg:justify-start lg:px-16">
@@ -57,7 +73,7 @@ const Login = () => {
           <h1 className="text-3xl font-semibold mb-12 text-center">
             Login to Your account
           </h1>
-          <form action="#" method="POST">
+          <form onSubmit={handleSubmit(onSubmit)}>
             {/* <!-- Username Input --> */}
             <div className="mb-6 relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -83,12 +99,16 @@ const Login = () => {
               </div>
               <input
                 type="email"
+                {...register("email")}
                 id="email"
                 placeholder="Enter your email"
                 name="email"
                 className="w-full border ps-10 h-[3.2rem] border-gray-900 bg-black text-white rounded-lg py-2 px-3 focus:outline-none focus:border-gray-400"
                 autoComplete="off"
               />
+              {errors.email && (
+                <p className="text-red-600">{`${errors.email.message}`}</p>
+              )}
             </div>
 
             {/* <!-- Password Input --> */}
@@ -112,12 +132,16 @@ const Login = () => {
               </div>
               <input
                 type="password"
+                {...register("password")}
                 id="password"
                 name="password"
                 placeholder="Enter your password"
                 className="w-full border ps-10 h-[3.2rem] border-gray-900 bg-black text-white rounded-lg py-2 px-3 focus:outline-none focus:border-gray-400"
                 autoComplete="off"
               />
+              {errors.password && (
+                <p className="text-red-600">{`${errors.password.message}`}</p>
+              )}
             </div>
             {/* <!-- Remember Me Checkbox --> */}
             <div className="mb-8 flex items-center">
@@ -134,6 +158,7 @@ const Login = () => {
             </div>
             {/* <!-- Login Button --> */}
             <button
+              disabled={isSubmitting}
               type="submit"
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
             >
@@ -142,7 +167,7 @@ const Login = () => {
           </form>
           {/* <!-- Sign up  Link --> */}
           <div className="mt-6 text-blue-500 text-center">
-            <Link href="#" className="hover:underline">
+            <Link href="/signup" className="hover:underline">
               Sign up Here
             </Link>
           </div>

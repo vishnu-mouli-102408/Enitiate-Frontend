@@ -1,6 +1,23 @@
 import Link from "next/link";
 import ImageFile from "../../../public/svg";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupSchema, signupSchemaTypes } from "@/lib/zodSchemas";
+
 const Signup = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<signupSchemaTypes>({
+    resolver: zodResolver(signupSchema),
+  });
+
+  const onSubmit = async (data: signupSchemaTypes) => {
+    reset();
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <div className="flex justify-center items-center mt-16 lg:justify-start lg:px-16">
@@ -57,7 +74,7 @@ const Signup = () => {
           <h1 className="text-3xl font-semibold mb-12 text-center">
             Create an account
           </h1>
-          <form action="#" method="POST">
+          <form onSubmit={handleSubmit(onSubmit)}>
             {/* <!-- Username Input --> */}
             <div className="mb-6 relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -82,6 +99,7 @@ const Signup = () => {
                 </svg>
               </div>
               <input
+                {...register("email")}
                 type="email"
                 id="email"
                 placeholder="Enter your email"
@@ -89,6 +107,9 @@ const Signup = () => {
                 className="w-full border ps-10 h-[3.2rem] border-gray-900 bg-black text-white rounded-lg py-2 px-3 focus:outline-none focus:border-gray-400"
                 autoComplete="off"
               />
+              {errors.email && (
+                <p className="text-red-600">{`${errors.email.message}`}</p>
+              )}
             </div>
 
             {/* <!-- Password Input --> */}
@@ -111,6 +132,7 @@ const Signup = () => {
                 </svg>
               </div>
               <input
+                {...register("password")}
                 type="password"
                 id="password"
                 name="password"
@@ -118,6 +140,9 @@ const Signup = () => {
                 className="w-full border ps-10 h-[3.2rem] border-gray-900 bg-black text-white rounded-lg py-2 px-3 focus:outline-none focus:border-gray-400"
                 autoComplete="off"
               />
+              {errors.password && (
+                <p className="text-red-600">{`${errors.password.message}`}</p>
+              )}
             </div>
             {/* confirm password */}
             <div className="mb-6 relative">
@@ -139,6 +164,7 @@ const Signup = () => {
                 </svg>
               </div>
               <input
+                {...register("confirmPassword")}
                 type="password"
                 id="confirm-password"
                 name="confirm-password"
@@ -146,6 +172,9 @@ const Signup = () => {
                 className="w-full border ps-10 h-[3.2rem] border-gray-900 bg-black text-white rounded-lg py-2 px-3 focus:outline-none focus:border-gray-400"
                 autoComplete="off"
               />
+              {errors.confirmPassword && (
+                <p className="text-red-600">{`${errors.confirmPassword.message}`}</p>
+              )}
             </div>
             {/* <!-- Remember Me Checkbox --> */}
             <div className="mb-8 flex items-center">
@@ -163,6 +192,7 @@ const Signup = () => {
             {/* <!-- Login Button --> */}
             <button
               type="submit"
+              disabled={isSubmitting}
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
             >
               Create my account
@@ -170,7 +200,7 @@ const Signup = () => {
           </form>
           {/* <!-- Sign up  Link --> */}
           <div className="mt-6 text-blue-500 text-center">
-            <Link href="#" className="hover:underline">
+            <Link href="/login" className="hover:underline">
               Login in Here
             </Link>
           </div>
