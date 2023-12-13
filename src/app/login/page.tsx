@@ -7,6 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { useSetRecoilState } from "recoil";
+import { userState } from "@/store/userState";
+import Head from "next/head";
+// import { onSubmitForm } from "../actions";
 
 interface FirebaseError extends Error {
   code: string;
@@ -23,6 +27,8 @@ const Login = () => {
     resolver: zodResolver(SignInSchema),
   });
 
+  const setUserState = useSetRecoilState(userState);
+
   const onSubmit = async (data: SigninSchemaTypes) => {
     try {
       const userCredentials = await signInWithEmailAndPassword(
@@ -31,6 +37,7 @@ const Login = () => {
         data.password
       );
       if (userCredentials) {
+        setUserState(userCredentials.user.uid);
         localStorage.setItem("uid", userCredentials.user.uid);
         localStorage.setItem("token", await userCredentials.user.getIdToken());
         router.push("/");
@@ -46,8 +53,21 @@ const Login = () => {
     }
   };
 
+  // const onSubmit = async (data: SigninSchemaTypes) => {
+  //   try {
+  //     onSubmitForm(data);
+  //     router.push("/");
+  //     reset();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   return (
     <div className="flex flex-col h-screen">
+      <Head>
+        <title>Login</title>
+      </Head>
       <div className="flex justify-center items-center mt-16 lg:justify-start lg:px-16">
         <svg
           width="60"

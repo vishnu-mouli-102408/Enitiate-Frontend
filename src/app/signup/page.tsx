@@ -7,6 +7,8 @@ import { SignupSchema, SignupSchemaTypes } from "@/lib/zodSchemas";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
+import { useSetRecoilState } from "recoil";
+import { userState } from "@/store/userState";
 
 const Signup = () => {
   const router = useRouter();
@@ -19,6 +21,8 @@ const Signup = () => {
     resolver: zodResolver(SignupSchema),
   });
 
+  const setUserState = useSetRecoilState(userState);
+
   const onSubmit = async (data: SignupSchemaTypes) => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(
@@ -27,6 +31,7 @@ const Signup = () => {
         data.password
       );
       if (userCredentials) {
+        setUserState(userCredentials.user.uid);
         router.push("/");
         reset();
       }
