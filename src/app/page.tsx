@@ -3,7 +3,29 @@ import Card from "@/components/Card";
 import Link from "next/link";
 import { cookies } from "next/headers";
 
-export default function Home() {
+type Posts = {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+};
+
+export const fetchPosts = async () => {
+  try {
+    const response = await fetch(
+      "https://jsonplaceholder.typicode.com/posts?_limit=10",
+      { cache: "force-cache" }
+    );
+    const data = response.json();
+    return data;
+  } catch (error) {
+    console.error("Error Fetching data", error);
+  }
+};
+
+export default async function Home() {
+  const posts: Posts[] = await fetchPosts();
+
   const handleOnBannerBtnClick = async () => {
     "use server";
     console.log("Hello Banner Button");
@@ -11,7 +33,6 @@ export default function Home() {
 
   const cookieStore = cookies();
   const userUID = cookieStore.get("uid");
-  console.log("COOKIE", userUID);
 
   if (!userUID?.value) {
     return (
@@ -38,10 +59,10 @@ export default function Home() {
         desc={"Discover Various Posts"}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {posts.length > 0 &&
+          posts.map((post: Posts) => {
+            return <Card key={post.id} title={post.title} />;
+          })}
       </div>
     </main>
   );
