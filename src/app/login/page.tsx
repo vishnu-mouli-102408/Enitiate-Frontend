@@ -38,8 +38,9 @@ const Login = () => {
       );
       if (userCredentials) {
         setUserState(userCredentials.user.uid);
-        localStorage.setItem("uid", userCredentials.user.uid);
-        localStorage.setItem("token", await userCredentials.user.getIdToken());
+        document.cookie = `uid=${userCredentials.user.uid};path=/`;
+        // localStorage.setItem("uid", userCredentials.user.uid);
+        // localStorage.setItem("token", await userCredentials.user.getIdToken());
         router.push("/");
         reset();
       }
