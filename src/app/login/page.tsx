@@ -1,9 +1,19 @@
+"use client";
 import Link from "next/link";
 import ImageFile from "../../../public/svg";
 import { useForm } from "react-hook-form";
 import { SignInSchema, SigninSchemaTypes } from "@/lib/zodSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { auth } from "@/lib/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+
+interface FirebaseError extends Error {
+  code: string;
+}
+
 const Login = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -14,7 +24,26 @@ const Login = () => {
   });
 
   const onSubmit = async (data: SigninSchemaTypes) => {
-    reset();
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      if (userCredentials) {
+        localStorage.setItem("uid", userCredentials.user.uid);
+        localStorage.setItem("token", await userCredentials.user.getIdToken());
+        router.push("/");
+        reset();
+      }
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      if (firebaseError.code === "auth/invalid-credential") {
+        console.log(firebaseError.code);
+      } else {
+        console.log("Login Error", firebaseError.message);
+      }
+    }
   };
 
   return (
@@ -45,8 +74,8 @@ const Login = () => {
               y2="44.6311"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#6CE1ED" />
-              <stop offset="1" stop-color="#0665F2" />
+              <stop stopColor="#6CE1ED" />
+              <stop offset="1" stopColor="#0665F2" />
             </linearGradient>
             <linearGradient
               id="paint1_linear_1_134"
@@ -56,8 +85,8 @@ const Login = () => {
               y2="56.0179"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#6CE1ED" />
-              <stop offset="1" stop-color="#0665F2" />
+              <stop stopColor="#6CE1ED" />
+              <stop offset="1" stopColor="#0665F2" />
             </linearGradient>
           </defs>
         </svg>
@@ -84,7 +113,7 @@ const Login = () => {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <g clip-path="url(#clip0_1_40)">
+                  <g clipPath="url(#clip0_1_40)">
                     <path
                       d="M1.8095 4.1115L9.57513 10.7685C9.80486 10.9655 10.1117 11.0825 10.4363 11.0968C10.7609 11.1111 11.0801 11.0216 11.3321 10.8458L11.4319 10.7685L19.1923 4.116C19.2176 4.1985 19.2343 4.2825 19.243 4.36875L19.25 4.5V13.5C19.2501 13.8784 19.0834 14.2429 18.7832 14.5204C18.483 14.7979 18.0715 14.9679 17.6313 14.9963L17.5 15H3.5C3.0585 15.0001 2.63325 14.8572 2.30952 14.5999C1.98579 14.3426 1.78749 13.9899 1.75438 13.6125L1.75 13.5V4.5C1.75 4.41 1.75875 4.323 1.77625 4.2375L1.8095 4.1115ZM17.5 3C17.6059 3 17.71 3.0075 17.8106 3.02325L17.9594 3.0525L10.5044 9.4425L3.04675 3.051C3.143 3.0285 3.24275 3.0135 3.34425 3.006L3.5 3H17.5Z"
                       fill="white"

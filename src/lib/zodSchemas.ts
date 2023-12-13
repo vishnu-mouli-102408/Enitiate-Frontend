@@ -3,19 +3,19 @@ import { z } from "zod";
 export const SignupSchema = z
   .object({
     email: z.string().email({ message: "Must be a valid email" }).trim(),
-    password: z.string().min(5, "Password must be atleast 5 characters"),
-    confirmPassword: z.string().optional(),
+    password: z.string().min(6, "Password must be atleast 6 characters"),
+    confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords must match",
     path: ["confirmPassword"],
+    message: "Passwords must match",
   });
 
 export type SignupSchemaTypes = z.infer<typeof SignupSchema>;
 
 export const SignInSchema = z.object({
   email: z.string().email().trim(),
-  password: z.string().min(5, "Password must be atleast 5 characters"),
+  password: z.string().min(6, "Password must be atleast 6 characters"),
 });
 
 export type SigninSchemaTypes = z.infer<typeof SignInSchema>;
