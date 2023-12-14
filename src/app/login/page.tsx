@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { userState } from "@/store/userState";
 import Head from "next/head";
+import Toast from "@/components/Toast";
+import { useState } from "react";
 // import { onSubmitForm } from "../actions";
 
 interface FirebaseError extends Error {
@@ -17,6 +19,10 @@ interface FirebaseError extends Error {
 }
 
 const Login = () => {
+  const [loginState, setLoginState] = useState({
+    status: true,
+    message: "",
+  });
   const router = useRouter();
   const {
     register,
@@ -39,6 +45,10 @@ const Login = () => {
       if (userCredentials) {
         setUserState(userCredentials.user.uid);
         document.cookie = `uid=${userCredentials.user.uid};path=/`;
+        setLoginState({
+          status: true,
+          message: "Login Successful",
+        });
         // localStorage.setItem("uid", userCredentials.user.uid);
         // localStorage.setItem("token", await userCredentials.user.getIdToken());
         router.push("/");
@@ -47,12 +57,24 @@ const Login = () => {
     } catch (error) {
       const firebaseError = error as FirebaseError;
       if (firebaseError.code === "auth/invalid-credential") {
+        setLoginState({
+          status: false,
+          message: `Login error. Please refresh and try again. ${firebaseError.code}`,
+        });
         console.log(firebaseError.code);
       } else {
+        setLoginState({
+          status: false,
+          message: `Login error. Please refresh and try again. ${firebaseError.code}`,
+        });
         console.log("Login Error", firebaseError.message);
       }
     }
   };
+
+  if (!loginState.status) {
+    return <Toast status={loginState.status} message={loginState.message} />;
+  }
 
   // const onSubmit = async (data: SigninSchemaTypes) => {
   //   try {

@@ -3,6 +3,7 @@ import NoUser from "@/components/NoUser";
 import { Posts, getImagesData } from "@/lib/helper";
 import { cookies } from "next/headers";
 import { fetchPostsDataWithImages } from "../actions";
+import Toast from "@/components/Toast";
 
 // const fetchAllPosts = async () => {
 //   const postsData: Posts[] = await fetchPostsData(100);
@@ -20,17 +21,28 @@ const Posts = async () => {
   const cookieStore = cookies();
   const userUID = cookieStore.get("uid");
   const postsData = await fetchPostsDataWithImages(100);
-  // console.log("POSTSDATA", postsData);
+  console.log("POSTSDATA", userUID);
 
   if (!userUID?.value) {
-    <NoUser />;
+    return (
+      <>
+        <NoUser />;
+        <Toast status={false} message="No user Found. Please Login." />;
+      </>
+    );
   }
 
   if (!postsData) {
     return (
-      <h1 className="flex flex-col justify-center items-center">
-        No posts found
-      </h1>
+      <>
+        <h1 className="flex flex-col justify-center items-center">
+          No posts found
+        </h1>
+        <Toast
+          status={false}
+          message="No data found. Please try again later."
+        />
+      </>
     );
   }
 

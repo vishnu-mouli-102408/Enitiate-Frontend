@@ -1,14 +1,21 @@
 import Image from "next/image";
 import { findPostById } from "@/app/actions";
 import Link from "next/link";
+import Toast from "@/components/Toast";
 const PostDetails = async ({ params }: { params: { id: string } }) => {
   const postData = await findPostById(params.id);
 
   if (!postData) {
     return (
-      <h1 className="flex justify-center items-center h-screen flex-col text-2xl font-bold">
-        No Data found
-      </h1>
+      <>
+        <h1 className="flex justify-center items-center h-screen flex-col text-2xl font-bold">
+          No Data found
+        </h1>
+        <Toast
+          status={false}
+          message="No data found. Please try again later."
+        />
+      </>
     );
   }
 

@@ -9,8 +9,18 @@ import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { userState } from "@/store/userState";
+import Toast from "@/components/Toast";
+import { useState } from "react";
+
+interface FirebaseError extends Error {
+  code: string;
+}
 
 const Signup = () => {
+  const [signupState, setSignupState] = useState({
+    status: true,
+    message: "",
+  });
   const router = useRouter();
   const {
     register,
@@ -32,13 +42,37 @@ const Signup = () => {
       );
       if (userCredentials) {
         setUserState(userCredentials.user.uid);
+        document.cookie = `uid=${userCredentials.user.uid};path=/`;
+        setSignupState({
+          status: true,
+          message: "Signup Successful",
+        });
         router.push("/");
         reset();
       }
     } catch (error) {
-      console.error(error);
+      const firebaseError = error as FirebaseError;
+      if (firebaseError.code === "auth/email-already-in-use") {
+        setSignupState({
+          status: false,
+          message: `Signup error. Please refresh and try again. ${firebaseError.code}`,
+        });
+        router.refresh();
+        console.log(firebaseError.code);
+      } else {
+        setSignupState({
+          status: false,
+          message: `Signup error. Please refresh and try again. ${firebaseError.code}`,
+        });
+        router.refresh();
+        console.log("SignUp Error", firebaseError.message);
+      }
     }
   };
+
+  if (!signupState.status) {
+    return <Toast status={signupState.status} message={signupState.message} />;
+  }
 
   return (
     <div className="flex flex-col h-screen">

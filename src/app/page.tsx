@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { Posts, getImagesData } from "@/lib/helper";
 import NoUser from "@/components/NoUser";
 import { fetchPostsDataWithImages } from "./actions";
+import Toast from "@/components/Toast";
 
 // const fetchPosts = async () => {
 //   try {
@@ -30,14 +31,25 @@ export default async function Home() {
   const userUID = cookieStore.get("uid");
 
   if (!userUID?.value) {
-    <NoUser />;
+    return (
+      <>
+        <NoUser />;
+        <Toast status={false} message="No user Found. Please Login." />;
+      </>
+    );
   }
 
   if (!posts) {
     return (
-      <h1 className="flex flex-col justify-center items-center">
-        No posts found
-      </h1>
+      <>
+        <h1 className="flex flex-col justify-center items-center">
+          No posts found
+        </h1>
+        <Toast
+          status={false}
+          message="No data found. Please try again later."
+        />
+      </>
     );
   }
 
