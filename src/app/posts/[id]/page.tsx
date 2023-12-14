@@ -6,7 +6,7 @@ const PostDetails = async ({ params }: { params: { id: string } }) => {
 
   if (!postData) {
     return (
-      <h1 className="flex flex-col justify-center items-center">
+      <h1 className="flex justify-center items-center h-screen flex-col text-2xl font-bold">
         No Data found
       </h1>
     );
@@ -19,13 +19,13 @@ const PostDetails = async ({ params }: { params: { id: string } }) => {
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-2 justify-center items-center gap-6 mb-8">
         <Image
-          className="rounded-t-lg m-auto"
+          className="rounded-lg m-auto"
           src={postData.imageUrl?.small as string}
           alt="Images"
           width={400}
           height={400}
         />
-        <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 m-auto">
+        <div className="max-w-md p-6 bg-slate-300 border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 m-auto">
           <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             {postData.title}
           </h5>
