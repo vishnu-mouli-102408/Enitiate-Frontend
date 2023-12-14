@@ -28,11 +28,6 @@ export const fetchPosts = async () => {
 export default async function Home() {
   const posts = await fetchPosts();
 
-  const handleOnBannerBtnClick = async () => {
-    "use server";
-    console.log("Hello Banner Button");
-  };
-
   const cookieStore = cookies();
   const userUID = cookieStore.get("uid");
 
@@ -52,7 +47,6 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
       <Banner
         buttonText="View All Posts"
-        handleOnClick={handleOnBannerBtnClick}
         title={"Featured Posts"}
         desc={"Discover Various Posts"}
       />

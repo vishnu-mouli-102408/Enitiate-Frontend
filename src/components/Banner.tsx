@@ -4,12 +4,10 @@ type btnClick = () => void;
 
 const Banner = ({
   buttonText,
-  handleOnClick,
   title,
   desc,
 }: {
   buttonText: string;
-  handleOnClick: btnClick;
   title: string;
   desc: string;
 }) => {
@@ -23,7 +21,7 @@ const Banner = ({
         </span>
       </h1>
       <p className="py-4 text-lg">{desc}</p>
-      <Button buttonText={buttonText} handleOnClick={handleOnClick} />
+      <Button buttonText={buttonText} />
     </div>
   );
 };
