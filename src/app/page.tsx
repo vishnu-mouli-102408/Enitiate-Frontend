@@ -1,14 +1,8 @@
 import Banner from "@/components/Banner";
 import Card from "@/components/Card";
-import Link from "next/link";
 import { cookies } from "next/headers";
-
-type Posts = {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-};
+import { Posts, getImagesData } from "@/lib/helper";
+import NoUser from "@/components/NoUser";
 
 export const fetchPosts = async () => {
   try {
@@ -16,15 +10,23 @@ export const fetchPosts = async () => {
       "https://jsonplaceholder.typicode.com/posts?_limit=10",
       { cache: "force-cache" }
     );
-    const data = response.json();
-    return data;
+    const data: Posts[] = await response.json();
+    const imagesData = await getImagesData();
+    const images = imagesData?.map((item) => item.urls);
+    if (images) {
+      const postsDataWithImages = data.map((post, index) => ({
+        ...post,
+        imageUrl: images[index],
+      }));
+      return postsDataWithImages;
+    }
   } catch (error) {
     console.error("Error Fetching data", error);
   }
 };
 
 export default async function Home() {
-  const posts: Posts[] = await fetchPosts();
+  const posts = await fetchPosts();
 
   const handleOnBannerBtnClick = async () => {
     "use server";
@@ -35,18 +37,14 @@ export default async function Home() {
   const userUID = cookieStore.get("uid");
 
   if (!userUID?.value) {
+    <NoUser />;
+  }
+
+  if (!posts) {
     return (
-      <div className="flex justify-center items-center h-screen flex-col">
-        <h1 className="text-2xl font-bold mb-8">
-          User Not Found. Please Login to Continue
-        </h1>
-        <button
-          type="button"
-          className="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        >
-          <Link href="/login">Login here</Link>
-        </button>
-      </div>
+      <h1 className="flex flex-col justify-center items-center">
+        No posts found
+      </h1>
     );
   }
 
@@ -61,7 +59,13 @@ export default async function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {posts.length > 0 &&
           posts.map((post: Posts) => {
-            return <Card key={post.id} title={post.title} />;
+            return (
+              <Card
+                key={post.id}
+                title={post.title}
+                imageUrl={post.imageUrl?.small as string}
+              />
+            );
           })}
       </div>
     </main>

@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "www.figma.com",
+        hostname: "images.unsplash.com",
       },
     ],
   },

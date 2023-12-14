@@ -1,10 +1,17 @@
+import Image from "next/image";
 import Link from "next/link";
 
-const Card = ({ title }: { title: string }) => {
+const Card = ({ title, imageUrl }: { title: string; imageUrl: string }) => {
   return (
     <Link href="/coffee/coffee-store/1">
       <div className="max-w-sm mb-12 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        {/* <Image className="rounded-t-lg" src="#" alt="Coffee Images" /> */}
+        <Image
+          className="rounded-t-lg"
+          src={imageUrl}
+          alt="Images"
+          width={400}
+          height={400}
+        />
         <div className="p-5">
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
             {title}
