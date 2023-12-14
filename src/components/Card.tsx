@@ -1,9 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Card = ({ title, imageUrl }: { title: string; imageUrl: string }) => {
+const Card = ({
+  title,
+  imageUrl,
+  hrefRoute,
+}: {
+  title: string;
+  imageUrl: string;
+  hrefRoute: string;
+}) => {
   return (
-    <Link href="/coffee/coffee-store/1">
+    <Link href={hrefRoute}>
       <div className="max-w-sm mb-12 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <Image
           className="rounded-t-lg"

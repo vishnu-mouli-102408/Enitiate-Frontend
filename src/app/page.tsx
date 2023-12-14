@@ -3,30 +3,28 @@ import Card from "@/components/Card";
 import { cookies } from "next/headers";
 import { Posts, getImagesData } from "@/lib/helper";
 import NoUser from "@/components/NoUser";
+import { fetchPostsDataWithImages } from "./actions";
 
-export const fetchPosts = async () => {
-  try {
-    const response = await fetch(
-      "https://jsonplaceholder.typicode.com/posts?_limit=10",
-      { cache: "force-cache" }
-    );
-    const data: Posts[] = await response.json();
-    const imagesData = await getImagesData();
-    const images = imagesData?.map((item) => item.urls);
-    if (images) {
-      const postsDataWithImages = data.map((post, index) => ({
-        ...post,
-        imageUrl: images[index],
-      }));
-      return postsDataWithImages;
-    }
-  } catch (error) {
-    console.error("Error Fetching data", error);
-  }
-};
+// const fetchPosts = async () => {
+//   try {
+//     const data: Posts[] = await fetchPostsData(10);
+//     const imagesData = await getImagesData();
+//     const images = imagesData?.map((item) => item.urls);
+//     if (images) {
+//       const postsDataWithImages = data.map((post, index) => ({
+//         ...post,
+//         imageUrl: images[index],
+//       }));
+//       return postsDataWithImages;
+//     }
+//   } catch (error) {
+//     console.error("Error Fetching data", error);
+//   }
+// };
 
 export default async function Home() {
-  const posts = await fetchPosts();
+  const posts = await fetchPostsDataWithImages(10);
+  // console.log("POSTS", posts);
 
   const cookieStore = cookies();
   const userUID = cookieStore.get("uid");
@@ -58,6 +56,7 @@ export default async function Home() {
                 key={post.id}
                 title={post.title}
                 imageUrl={post.imageUrl?.small as string}
+                hrefRoute={`/posts/${post.id.toString()}`}
               />
             );
           })}
