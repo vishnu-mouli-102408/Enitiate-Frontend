@@ -21,6 +21,7 @@ export default function RootLayout({
             {children}
             <Script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js" />
             <Script src="https://unpkg.com/flowbite@2.2.0/dist/flowbite.js" />
+            <Script src="/node_modules/flowbite/dist/flowbite.min.js" />
           </body>
         </RecoilRoot>
       </QueryClientProvider>

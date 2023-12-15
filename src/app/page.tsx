@@ -24,7 +24,7 @@ import Toast from "@/components/Toast";
 // };
 
 export default async function Home() {
-  const posts = await fetchPostsDataWithImages(10);
+  const posts = await fetchPostsDataWithImages(12);
   // console.log("POSTS", posts);
 
   const cookieStore = cookies();

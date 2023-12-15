@@ -4,6 +4,7 @@ import { Posts, getImagesData } from "@/lib/helper";
 import { cookies } from "next/headers";
 import { fetchPostsDataWithImages } from "../actions";
 import Toast from "@/components/Toast";
+import Link from "next/link";
 
 // const fetchAllPosts = async () => {
 //   const postsData: Posts[] = await fetchPostsData(100);
@@ -21,7 +22,6 @@ const Posts = async () => {
   const cookieStore = cookies();
   const userUID = cookieStore.get("uid");
   const postsData = await fetchPostsDataWithImages(100);
-  console.log("POSTSDATA", userUID);
 
   if (!userUID?.value) {
     return (
@@ -48,7 +48,12 @@ const Posts = async () => {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-12">
-      <h1 className="text-3xl font-bold mb-6">All Posts</h1>
+      <div className="flex justify-center">
+        <h1 className="text-xl mb-16 cursor-pointer pr-12">
+          <Link href="/">⬅ Back to Home</Link>
+        </h1>
+        <h1 className="text-3xl font-bold mb-6">All Posts</h1>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {postsData.length > 0 &&
           postsData.map((post: Posts) => {
