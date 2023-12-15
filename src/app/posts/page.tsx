@@ -47,7 +47,7 @@ const Posts = async () => {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-12">
+    <main className="flex min-h-screen flex-col items-center justify-between p-12 bg-cover bg-[url('https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30456.jpg?size=626&ext=jpg&ga=GA1.1.1266420118.1702626864&semt=ais')]">
       <div className="flex justify-center">
         <h1 className="text-xl mb-16 cursor-pointer pr-12">
           <Link href="/">⬅ Back to Home</Link>

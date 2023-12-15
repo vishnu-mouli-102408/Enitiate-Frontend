@@ -20,7 +20,7 @@ const PostDetails = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <main className="flex min-h-screen flex-col p-12">
+    <main className="flex min-h-screen flex-col p-12 bg-cover bg-[url('https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30456.jpg?size=626&ext=jpg&ga=GA1.1.1266420118.1702626864&semt=ais')]">
       <h1 className="text-xl justify-start mb-16 cursor-pointer">
         <Link href="/posts">⬅ Back to Posts</Link>
       </h1>

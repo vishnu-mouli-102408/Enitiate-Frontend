@@ -2,9 +2,9 @@ import Banner from "@/components/Banner";
 import Card from "@/components/Card";
 import { cookies } from "next/headers";
 import { Posts, getImagesData } from "@/lib/helper";
-import NoUser from "@/components/NoUser";
 import { fetchPostsDataWithImages } from "./actions";
 import Toast from "@/components/Toast";
+import Landing from "@/components/Landing";
 
 // const fetchPosts = async () => {
 //   try {
@@ -33,8 +33,7 @@ export default async function Home() {
   if (!userUID?.value) {
     return (
       <>
-        <NoUser />;
-        <Toast status={false} message="No user Found. Please Login." />;
+        <Landing />
       </>
     );
   }
@@ -54,7 +53,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-12">
+    <main className="flex min-h-screen flex-col items-center justify-between p-12 bg-cover bg-[url('https://img.freepik.com/free-photo/abstract-textured-backgound_1258-30456.jpg?size=626&ext=jpg&ga=GA1.1.1266420118.1702626864&semt=ais')]">
       <Banner
         buttonText="View All Posts"
         title={"Featured Posts"}
